@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    
+</body>
+<script>
+const menuList = [
+    {pid: -1, path: '/cart', name: '购物车', id: 1, auth: 'cart'},
+    {pid: 1, path: '/cart/cart-list', name: '购物车列表', id: 4, auth: 'cart-list'},
+    {pid: 4, path: '/cart/cart-list/lottery', name: '彩票', id: 5, auth: 'lottery'},
+    {pid: 4, path: '/cart/cart-list/product', name: '商品', id: 6, auth: 'product'},
+    {pid: -1, path: '/shop', name: '商店', id: 2, auth: 'shop'},
+    {pid: -1, path: '/profile', name: '个人中心', id: 3, auth: 'store'},
+]
+function formatMenuList(menuList) {
+    const authArr = []
+    //首先找到根
+      function r(pid) {
+        return menuList.filter(item => {
+            if(item.pid === pid) {
+                authArr.push(item.auth)
+                let children =  r(item.id)
+                item.children = children.length ? children : null
+                return true
+            }
+        })
+    }
+    return {
+        menuList: r(-1),
+        authArr
+    }
+}
+console.log(formatMenuList(menuList))
+
+
+</script>
+</html>
