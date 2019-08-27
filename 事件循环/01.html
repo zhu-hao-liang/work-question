@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+
+</body>
+<script>
+    /* 
+    浏览器事件循环总结
+    js主线程是单线程的 执行代码时会首先在执行栈上执行同步代码，异步代码（ajax, dom事件, settimeOut）
+    会处于挂起状态  比如ajax请求完毕后，会进入事件队列（先进先出），同步代码执行完毕后，执行栈
+    会读取（一个一个读的）事件队列里ajax,进入执行栈执行，执行完毕后，执行栈又会去事件队列里去读取其他已经完成的异步代码，直到
+    将事件队列里的异步任务全部读取完毕，才会停止，执行栈反复读取事件队列的过程 称为事件轮询
+
+    异步任务分为宏任务（ajax, dom事件, settimeOut  慢）
+    微任务（promise.then(), process.nexttick  快）
+    事件队列可以分为微任务事件队列和宏任务事件队列 执行栈读取事件队列时
+    会优先读取微任务事件队，全部读取完毕后 再去读取宏任务事件队列
+    
+     */
+    setTimeout(() => {
+        console.log(3)
+        Promise.resolve().then(() => console.log(5))
+    }, 0)
+    new Promise((resolve, reject) => {
+        console.log(1)
+        setTimeout(() => {
+            console.log(4)
+            resolve()
+        }, 0)
+
+    }).then(() => console.log(2))
+    //console.log(4)
+</script>
+
+</html>
