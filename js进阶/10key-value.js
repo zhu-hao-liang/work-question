@@ -5,7 +5,7 @@
       let value = data[key] !== undefined ? data[key] : ''
       url += '&' + key + '=' + encodeURIComponent(value)
     }
-    return url 
+    return url ? url.slice(1) : ''
   }
   var res = param({name: 'zs', age: '123',gender: '男'})
   console.log(res)

@@ -35,7 +35,6 @@
   }
   //发布者
   emitter(type) {//在触发事件里调用监听者的方法（监听者的形参）
-   debugger
    const handleEvent = this.events.type
    handleEvent.apply(this, [...arguments].slice(1))
   }

@@ -18,26 +18,26 @@ const menuList = [
     {pid: -1, path: '/shop', name: '商店', id: 2, auth: 'shop'},
     {pid: -1, path: '/profile', name: '个人中心', id: 3, auth: 'store'},
 ]
+
+//将menuList格式化为树状结构
 function formatMenuList(menuList) {
     const authArr = []
     //首先找到根
-      function r(pid) {
+    function r(pid) {
         return menuList.filter(item => {
-            if(item.pid === pid) {
+            if(pid === item.pid) {
                 authArr.push(item.auth)
-                let children =  r(item.id)
-                item.children = children.length ? children : null
+                item.children = r(item.id)
                 return true
             }
         })
     }
-    return {
-        menuList: r(-1),
-        authArr
-    }
+   return {
+    menuList: r(-1),
+    authArr
+   }
 }
+
 console.log(formatMenuList(menuList))
-
-
 </script>
 </html>
