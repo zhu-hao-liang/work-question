@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        * {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .wrapper {
+            height: 100vh;
+            /* display: flex;
+        justify-content: center; */
+            overflow: hidden;
+            text-align: center;
+        }
+
+        li {
+            height: 30px;
+            line-height: 30px;
+        }
+
+        .pullDown {
+            width: 100%;
+            height: 20px;
+            line-height: 20px;
+            position: absolute;
+            left: 0;
+            top: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .pullDownIng {
+            width: 20px;
+            height: 20px;
+            display: none;
+        }
+        .pullDownIng1 {
+            width: 20px;
+            height: 20px;
+           
+        }
+        .pullDown span {
+            display: none
+        }
+
+        .pullup {
+            width: 100%;
+            height: 20px;
+            line-height: 20px;
+            text-align: center;
+            display: none;
+        }
+
+        ;
+    </style>
+</head>
+
+<body>
+    <div class="wrapper">
+        <div class="scroll-wrapper">
+            <ul class="content">
+                <li>1</li>
+                <li>2</li>
+                <li>3</li>
+                <li>4</li>
+                <li>5</li>
+                <li>6</li>
+                <li>7</li>
+                <li>8</li>
+                <li>9</li>
+                <li>10</li>
+                <li>11</li>
+                <li>12</li>
+                <li>13</li>
+                <li>14</li>
+                <li>15</li>
+                <li>16</li>
+                <li>17</li>
+                <li>18</li>
+                <li>19</li>
+                <li>20</li>
+                <li>21</li>
+                <li>22</li>
+                <li>23</li>
+                <li>24</li>
+                <li>25</li>
+                <li>26</li>
+                <li>27</li>
+                <li>28</li>
+                <li>29</li>
+                <li>30</li>
+            </ul>
+            <!-- 上拉加载 一定要放在滚动容器里 下拉刷新不用-->
+            <div class="pullup">
+                <img src="./loading.gif" alt="" class="pullDownIng1">
+            </div>
+
+        </div>
+        <!-- 这里可以放一些其它的 DOM，但不会影响滚动 -->
+
+
+
+        <!-- 下拉刷新 -->
+        <div class="pullDown">
+            <span class="text">刷新完成</span>
+            <img src="./loading.gif" alt="" class="pullDownIng">
+        </div>
+
+    </div>
+</body>
+<script src="./node_modules/jquery/dist/jquery.min.js"></script>
+<script src="./node_modules/better-scroll/dist/bscroll.min.js"></script>
+<script>
+    let wrapper = document.querySelector('.wrapper')//最外层容器不支持flex布局
+    let scroll = new BScroll(wrapper, {
+        pullDownRefresh: {//下拉刷新
+            threshold: 50,
+            stop: 20
+        },
+        pullUpLoad: {//上拉加载
+            threshold: 50
+        }
+    })
+    scroll.on('pullingDown', () => {//实例监听下拉事件
+        console.log('pullingDown触发了')
+        $('.pullDownIng').show()
+        setTimeout(() => {
+
+            $('.pullDownIng').hide()
+            $('.text').show()
+
+
+            setTimeout(() => {
+                add('prepend')
+                $('.text').hide()
+            }, 200)
+
+
+
+            setTimeout(() => {
+                //当下拉刷新数据加载完毕后，需要执行 finishPullDown 方法,来结束此次下拉事件
+                scroll.finishPullDown()
+                //每次更新dom后需要重新刷新当前dom结构
+                scroll.refresh()
+            }, 2000)
+
+        }, 2000)
+
+    })
+
+
+
+
+    scroll.on('pullingUp', () => {
+        console.log('pullingUp触发了')
+        $('.pullup').show()
+          
+
+
+          setTimeout(() => {
+            add('append')
+            scroll.finishPullUp()
+            //每次更新dom后需要重新刷新当前dom结构
+            scroll.refresh()
+          },1000)
+    })
+    function add(dir) {
+        let li = '';
+        for (var i = 0; i < 5; i++) {
+            li += `<li>新增${i}</li>`
+        }
+        $('.content')[dir]($(li))
+    }
+</script>
+
+</html>

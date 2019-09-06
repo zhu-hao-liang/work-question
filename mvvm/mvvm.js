@@ -1,3 +1,41 @@
+
+//被观察者
+class Dep {
+    constructor() {
+        this.watchers = []
+    }
+    addWatcher(watcher) {
+        this.watchers.push(watcher)
+    }
+    notify() {
+        this.watchers.forEach((watch) => watch.update())
+    }
+}
+
+//使用观察者模式将数据劫持与模板编译关联在一起，修改数据，视图改变
+class Watcher {
+    constructor(vm, expr, cb) {
+        this.vm = vm
+        this.expr = expr
+        this.cb = cb
+        this.oldValue = this.get()
+    }
+    //new Watcher时会调用get方法 从而会调用getValue方法 
+    //getValue方法会进行取值，而一取值，就会调用 Object.defineProperty的get方法
+    get() {
+        Dep.target = this
+        let value = compileUtil.getValue(this.vm, this.expr)
+        Dep.target = null
+        return value
+    }
+    update() {
+        let newValue = compileUtil.getValue(this.vm, this.expr)
+        if (newValue !== this.oldValue) {
+            this.cb(newValue)
+        }
+    }
+}
+
 //数据劫持的类
 class Observer {
     constructor(data) {
@@ -17,9 +55,13 @@ class Observer {
         if (typeof value === 'object') {
             this.observer(value)
         }
+
+        let dep = new Dep()
+        console.log(dep)
         Object.defineProperty(obj, key, {
             get: () => {
                 console.log('执行get方法了')
+                Dep.target && dep.addWatcher(Dep.target)
                 return value
             },
             set: (newValue) => {
@@ -27,10 +69,11 @@ class Observer {
                 if (newValue !== value) {
                     console.log('newValue', newValue)
                     //如果赋予的新值为对象的话 还需要再次进行劫持
-                    if(typeof newValue === 'object') {
+                    if (typeof newValue === 'object') {
                         this.observer(newValue)
                     }
                     value = newValue
+                    dep.notify()
                 }
 
             }
@@ -44,13 +87,24 @@ class MVVM {
         //将options对象中的属性挂载在this上
         this.$el = options.el
         this.$data = options.data
+        this.computed = options.computed
         //在编译之前将数据this.$data做数据劫持
         new Observer(this.$data)
         console.log(this.$data)
-
+        //通过this.xxx取值
+        this.proxyVm(this.$data)
         //根元素存在,进行编译模板
         if (this.$el) {
             new Compiler(this.$el, this)
+        }
+    }
+    proxyVm(data) {
+        for (let key in data) {
+             Object.defineProperty(this, key, {
+                 get() {
+                     return data[key]
+                 }
+             })
         }
     }
 }
@@ -63,18 +117,13 @@ class Compiler {
         //将 this.el 中所有的子元素放到内存中 一起渲染
         let fragment = this.node2fragment(this.el)
 
-
         //将节点中的内容进行替换,用数据编译模板
         this.compile(fragment)
-
-
 
         //将所有子节点节点再塞回页面
         this.el.appendChild(fragment)
 
     }
-
-
 
     //以v-开头的
     isDirective(name) {
@@ -103,8 +152,10 @@ class Compiler {
         //获取文本节点里的内容
         const content = node.textContent;
         //console.log('文本节点里的内容', content)
-        if (/\{\{(.+?)\}\}/.test(content)) {//正则这不是太明白
+        if (/\{\{(.+?)\}\}/.test(content)) {//匹配{{}} ？放在量词后面表示懒匹配
             //console.log('符合{{}}', content)
+            compileUtil.text(node, content, this.vm)
+
         }
     }
     //编译内存中的dom节点,核心的编译方法
@@ -152,22 +203,51 @@ class Compiler {
 }
 //编译指令的工具
 compileUtil = {
-    //将据表达式取到对应的数据
+    //跟据表达式获取取到vm.$data对应的数据
     getValue(vm, expr) {//[school, name]
         return expr.split('.').reduce((pre, item) => {
+            return pre[item]
+        }, vm.$data)
+    },
+    setValue(vm, expr, value) {
+        return expr.split('.').reduce((pre, item, index, arr) => {
+               if(index == arr.length-1) {
+                return pre[item] =value
+               }
             return pre[item]
         }, vm.$data)
     },
     model(node, expr, vm) {// node为当前节点input输入框 expr为school.name
         //给输入框赋予value属性 node.value = xxx
         const value = this.getValue(vm, expr)
-        const fn = this.updater.modelUpdater(node, value)
-
-
+        const fn = this.updater.modelUpdater
+        //初始化时的解析数据，更新视图
+        fn(node, value)
+        //给输入框加一个观察者,如果稍后数据更新了，会触发此方法，拿到新值，更新视图
+        new Watcher(vm, expr, (newValue) => {
+            fn(node, newValue)//进行更新视图的操作
+        })
+        node.addEventListener('input', (e) => {
+           let value = e.target.value
+           this.setValue(vm, expr, value)
+        })
 
     },
-    test() {
-
+    getContentValue(vm, expr) {
+        return expr.replace(/\{\{(.+?)\}\}/g, (...arg) => {
+            return this.getValue(vm, arg[1])
+        })
+    },
+    text(node, expr, vm) { //expr: {{school.name}} {{a}}
+        let content = expr.replace(/\{\{(.+?)\}\}/g, (...arg) => {
+            console.log(arg[1]);
+            //给{{}}里面的内容加入观察者
+            new Watcher(vm, arg[1], () => {
+                this.updater.textUpdater(node, this.getContentValue(vm, expr))
+            })
+            return this.getValue(vm, arg[1])
+        })
+        this.updater.textUpdater(node, content)
     },
     html() {
 
@@ -175,6 +255,10 @@ compileUtil = {
     updater: {
         modelUpdater(node, value) {
             node.value = value
+        },
+        //处理文本节点的
+        textUpdater(node, value) {
+            node.textContent = value
         }
     }
 }
