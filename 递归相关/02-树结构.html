@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+
+</body>
+<script>
+   const menuList = [
+    {
+      title: '首页', // 菜单标题名称
+      key: '/home', // 对应的path
+      icon: 'home', // 图标名称
+      isPublic: true, // 公开的
+    },
+    {
+      title: '商品',
+      key: '/products',
+      icon: 'appstore',
+      children: [ // 子菜单列表
+        {
+          title: '品类管理',
+          key: '/category',
+          icon: 'bars',
+          children: [{
+            title: '递归管理'
+          }]
+        },
+        {
+          title: '商品管理',
+          key: '/product',
+          icon: 'tool'
+        },
+      ]
+    },
+    {
+      title: '首页', // 菜单标题名称
+      key: '/home', // 对应的path
+      icon: 'home', // 图标名称
+      isPublic: true, // 公开的
+    },
+  ]
+    // 深度优先的递归遍历
+  const deepTree = (tree, callback) => {
+     tree.forEach(item => {
+          console.log(item.title);
+         if(item.children && item.children.length) {
+            deepTree(item.children)  
+         }
+     })
+  }
+  deepTree(menuList)
+</script>
+
+</html>

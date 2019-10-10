@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="app">
+        <ul>
+            <li>123</li>
+        </ul>
+        <span>123</span>
+    </div>
+</body>
+<script>
+
+    /**
+     * 递归子节点，给每个元素节点添加'data-v-123456'属性 
+     * @param {节点或元素} root 要递归的节点或元素
+     * @param {Function} callback 每一次遍历的回调函数
+     */
+    const getChildNodes = (root, callback) => {
+        if(root.children && root.children.length) {
+            [...root.children].forEach(item => {
+                callback && callback(item)
+                getChildNodes(item, callback)
+            })
+        }
+    }
+    const app = document.querySelector('#app')
+    getChildNodes(app, function(node) {
+       node.setAttribute('data-v-123456', '');
+    })
+
+
+</script>
+
+</html>

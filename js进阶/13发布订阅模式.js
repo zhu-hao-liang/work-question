@@ -1,6 +1,8 @@
 /* 
 eventEmitter: {
-    events: [fn1, fn2, fn3]
+    events: {
+        '吃饭': [fn1, fn2, fn3]
+    }
 }
 
 */

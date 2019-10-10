@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+
+</body>
+<script>
+    var arr = [1, [2]];
+    // //方法一：数据类型转换
+    // var add = arr.join(",").split(",")// 或者：var add=arr.toString().split(",")
+    // console.log(add)
+    // for (var i = 0; i < add.length; i++) {
+    //     add[i] = parseInt(add[i])
+    // }
+    // console.log(add)
+
+    //return prev.concat(Array.isArray(next)?flatten(next):next);
+    function flatten(arr) {
+        return arr.reduce((prev, item) => {
+          
+            return prev.concat(Array.isArray(item) ? flatten(item) : item);
+
+        }, [])
+    }
+    console.log(flatten(arr))
+
+</script>
+
+</html>
