@@ -57,7 +57,6 @@ class Observer {
         }
 
         let dep = new Dep()
-        console.log(dep)
         Object.defineProperty(obj, key, {
             get: () => {
                 console.log('执行get方法了')
@@ -153,7 +152,8 @@ class Compiler {
         const content = node.textContent;
         //console.log('文本节点里的内容', content)
         if (/\{\{(.+?)\}\}/.test(content)) {//匹配{{}} ？放在量词后面表示懒匹配
-            //console.log('符合{{}}', content)
+            console.log('符合{{}}', content)
+            debugger
             compileUtil.text(node, content, this.vm)
 
         }

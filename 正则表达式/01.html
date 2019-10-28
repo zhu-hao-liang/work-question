@@ -1,22 +1,31 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
 </head>
+
 <body>
-    
+
 </body>
 <script>
+    "get-element-by-id   =>    getElementById"
 
-let str = 'abc{{a}} {{b}}';
-let str1 = str.replace(/\{\{(.+?)\}\}/, '$1')
-console.log(str1)
-
-
-
-
+    let str = 'get-element-by-id';
+    let arr = str.split('-');
+    function test(str) {
+        return str.split('-').reduce((pre, item, index) => {
+            let a = index !== 0 ? item.slice(0, 1).toUpperCase() : item.slice(0, 1)
+            let b = item.slice(1)
+            pre.push(a + b)
+            return pre
+        }, []).join('')
+    }
+    console.log(test(str));
+    console.log();
 </script>
+
 </html>

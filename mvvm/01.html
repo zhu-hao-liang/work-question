@@ -12,16 +12,16 @@
 
 </body>
 <script>
-    // var obj = {}
-    // Object.defineProperty(obj, 'name', {//可以定制本身没有的属性
-    //     get() {
-    //         console.log('get执行');
-    //         return 'zs'
-    //     },
-    //     set(newValue) {
-    //         console.log(newValue)
-    //     }
-    // })
+    var obj = {name: '123'}
+    Object.defineProperty(obj, 'name', {//可以定制本身没有的属性
+        get() {
+            console.log('get执行');
+            return 'zs'
+        },
+        set(newValue) {
+            console.log(newValue)
+        }
+    })
 </script>
 
 </html>

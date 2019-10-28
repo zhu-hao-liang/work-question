@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+
+</body>
+<script>
+    //正则里小括号的作用：提升优先级   分组捕获
+    let time = '2019-08-27';
+    let reg = /(\d{4})-(\d{1,2})-(\d{1,2})/
+    //exec具有捕获功能,第一项为整个正则匹配的内容，二三四项分别对应小括号里面的内容。
+    console.log(reg.exec(time));//[2019-08-27, 2019, 08, 27]
+
+    //replace 同样具有捕获功能，$1,$2,$3分别对应小括号里的内容。
+    console.log(time.replace(reg, '$1年$2月$3日'));//2019年08月27日
+
+    //replace 正则每匹配一次，回调调用一次 给回调传递的实参信息（和exec方法捕获的一致，整个正则匹配的内容，小分组匹配的内容...）
+    let time1 = time.replace(reg, function (...arg) {
+        let [, a, b, c] = arg;
+        return `${a}年${b}月${c}日`
+    })
+    console.log(time1);//2019年08月27日
+
+
+    let word = 'good good study, day day up'
+    let reg1 = /\b([a-zA-Z])[a-zA-Z]*\b/g
+    //正则匹配了六次，函数执行六次
+    let word1 = word.replace(reg1, (...arg) => {
+        [content, other] = arg;
+        return other.toUpperCase() + content.slice(1)
+    })
+    console.log(word1);//Good Good Study, Day Day Up
+</script>
+
+</html>
