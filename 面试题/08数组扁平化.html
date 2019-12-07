@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    
+</body>
+<script>
+const arr = [1,  ['a']];
+// 正则
+// const arr1 = JSON.stringify(arr).replace(/([\[\]])/g, '').split();
+// console.log(arr1)
+
+// reduce 加递归
+let flatten = (arr) => {
+    return arr.reduce((prev, item) => {
+        return prev.concat(Array.isArray(item) ? flatten(item) : item)
+    }, [])
+}
+console.log(flatten(arr))
+
+
+</script>
+</html>

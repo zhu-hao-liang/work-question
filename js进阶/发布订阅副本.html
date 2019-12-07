@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+
+</body>
+<script>
+   class eventEmitter {
+       constructor() {
+           this.event = {}
+       }
+       on(eventName, fn) {
+          if(!this.event[eventName]) {
+            this.event[eventName] = [fn]
+          }else {
+            this.event[eventName].push(fn)
+          }
+       }
+       // emit 调用时 调用所有的方法
+       emit(eventName) {
+        this.event[eventName].forEach(fn => fn())
+       }
+   }
+   let event1 = new eventEmitter();
+   event1.on('吃肉', () => {
+       console.log('肉肉');
+   })
+   event1.emit('吃肉')
+</script>
+
+</html>

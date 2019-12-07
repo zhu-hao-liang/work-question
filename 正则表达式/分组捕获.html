@@ -23,6 +23,7 @@
 
     //replace 正则每匹配一次，回调调用一次 给回调传递的实参信息（和exec方法捕获的一致，整个正则匹配的内容，小分组匹配的内容...）
     let time1 = time.replace(reg, function (...arg) {
+        console.log('arg',arg);
         let [, a, b, c] = arg;
         return `${a}年${b}月${c}日`
     })

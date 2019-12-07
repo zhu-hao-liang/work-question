@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+
+</body>
+<script>
+
+    const arr = [
+        { id: 1, name: 'zs', age: 20 },
+        { id: 2, name: 'ls', age: 20 },
+        { id: 3, name: '123', age: 20 },
+    ]
+    /*
+     reduce是一个进行累计的方法的  第二个参数指定pre的初始值  
+    */
+    const arr1 = arr.reduce((pre, item) => {
+       // pre.push(item.id)
+        return 1
+    }, [])
+    console.log(arr1)
+
+</script>
+
+</html>

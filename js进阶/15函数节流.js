@@ -13,3 +13,13 @@ function throttle(fn, delay) {
     }
 
 }
+function throttle(fn, delay) {
+    let lastTime = null
+    return function() {
+        let nowTime = Date.now()
+        if(nowTime - lastTime > delay) {
+            fn.call(this)
+            lastTime = nowTime
+        }
+    }
+}

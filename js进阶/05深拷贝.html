@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    
+</body>
+<script>
+function deepClone(obj) {
+  const copy = obj instanceof Object ? {} : []
+  for (let key in obj) {
+      if(typeof obj[key] !== 'object') {
+          copy[key] = obj[key]
+      }else {
+          copy[key] = deepClone(obj[key])
+      }
+  }
+  return copy
+}
+const obj1 = {
+    name: 'zs',
+    dog: {
+        yellow: '黄色'
+
+    },
+    test: function () {
+        console.log('123')
+    }
+}
+console.log(deepClone(obj1))
+</script>
+</html>

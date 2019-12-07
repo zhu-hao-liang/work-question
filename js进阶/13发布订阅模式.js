@@ -27,7 +27,7 @@ class EventEmitter {
     }
     //移除
     remove(eventName, callback) {
-        this.events[eventName] = this.events[eventName].filter(fn => fn !== callback )
+        this.events[eventName] = this.events[eventName].filter(fn => fn !== callback)
     }
 }
 const e = new EventEmitter();

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    
+</body>
+<script>
+
+// 第一眼看懵逼  可以先把push源码实现
+Array.prototype.push = function(value) {
+    this[this.length] = value
+    // this.length 会自动加1
+    return this.length
+ }
+//  [1,2,3].push(1) arr[arr.length]
+
+
+
+let obj = {
+    2: 3,
+    3: 4,
+    length: 2,
+    push: Array.prototype.push
+}
+obj.push(1)  // obj[2] = 1  length => 3
+obj.push(2) // obj[3] = 2 length => 4
+console.log(obj)
+
+
+
+</script>
+</html>

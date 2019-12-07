@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        #canvas {
+            border: 1px solid red;
+        }
+    </style>
+</head>
+
+<body>
+    <canvas id="canvas" width="640" height="320"></canvas>
+</body>
+<script>
+    var c = document.getElementById("canvas");
+    var ctx = c.getContext("2d");
+    ctx.fillStyle = "#FF0000";
+    ctx.fillRect(0, 0, 150, 75);
+
+</script>
+
+</html>

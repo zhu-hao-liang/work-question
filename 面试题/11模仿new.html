@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    
+</body>
+<script>
+function Dog(name) {
+    this.name = name
+}
+Dog.prototype.bark = function() {
+    console.log('汪汪汪')
+}
+Dog.prototype.sayName = function() {
+    console.log(this)
+    console.log(this.name)
+}
+// let dog1 = new Dog('哈士奇')
+// dog1.bark()
+// dog1.sayName()
+
+
+// 自己实现一个_new 方法， 模拟内置new 的结果
+/* 分析 js内置new做了什么？
+1 像普通函数执行一样 形成一个私有作用域，形参赋值，变量提升
+2 默认创建一个对象， 让函数中的this指向这个对象，这个对象就是当前类的一个实例
+3 代码执行
+4 返回这个对象
+*/
+function _new(Fn, ...arg) {
+ const obj = {};
+ obj.__proto__ = Fn.prototype
+ Fn.call(obj, ...arg) // 改变Fn函数的this指向 ，指向这个对象，这个对象就是当前类的一个实例
+ return obj
+}
+let dog1 = _new(Dog,'哈士奇')
+dog1.bark()
+dog1.sayName()
+
+
+
+
+
+</script>
+</html>

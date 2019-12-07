@@ -22,20 +22,35 @@
      * 递归子节点，给每个元素节点添加'data-v-123456'属性 
      * @param {节点或元素} root 要递归的节点或元素
      * @param {Function} callback 每一次遍历的回调函数
-     */
-    const getChildNodes = (root, callback) => {
-        if(root.children && root.children.length) {
-            [...root.children].forEach(item => {
-                callback && callback(item)
-                getChildNodes(item, callback)
-            })
-        }
-    }
-    const app = document.querySelector('#app')
-    getChildNodes(app, function(node) {
-       node.setAttribute('data-v-123456', '');
-    })
-
+    //  */
+    // const getChildNodes = (root, callback) => {
+    //     if(root.children && root.children.length) {
+    //         [...root.children].forEach(item => {
+    //             callback && callback(item)
+    //             getChildNodes(item, callback)
+    //         })
+    //     }
+    // }
+    // const app = document.querySelector('#app')
+    // getChildNodes(app, function(node) {
+    //    node.setAttribute('data-v-123456', '');
+    // })
+    // const getChildNodes = function(root, cb) {
+    //      if(root.children && root.children.length) {
+    //          [...root.children].forEach(item => {
+    //              cb && cb(item)
+    //              getChildNodes(item, cb)
+    //          })
+    //      }
+    // }
+    // const app = document.querySelector('#app')
+    // getChildNodes(app, function(node) {
+    //   node.setAttribute('zhu-hao-liang','哈哈')
+    // })
+   let nodes = document.querySelectorAll('#app *');
+   [...nodes].forEach(node => {
+    node.setAttribute('zhu-hao-liang','哈哈')
+   })
 
 </script>
 

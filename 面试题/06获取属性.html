@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <div class="box box1" title="123">
+        <ul class="box">
+            <li class="li"></li>
+        </ul>
+    </div>
+    <div class="box3 box4" name='zhu'></div>
+    <div data-index="1"></div>
+</body>
+<script>
+//console.log(document.querySelectorAll('body *'))
+
+//let ary = $attr('class', 'box') // 获取页面中所有class 为box 的元素
+
+const $attr = function(prop, value) {
+  const nodes = document.querySelectorAll('body *');
+  const arr = [];
+  [...nodes].forEach(node => {
+      let propValue = node.getAttribute(prop);
+
+      // class 属性可能会有多个值
+      if(prop === 'class') {
+         new RegExp('\\b' + value + '\\b').test(propValue) ? arr.push(node): null   // 字符串里俩斜杠代表一个斜杆
+          return 
+
+      }
+      if(propValue === value) {
+        arr.push(node)
+      }
+  });
+  return arr
+}
+console.log($attr('class', 'box')) // 获取页面中所有class 为box 的元素
+</script>
+</html>

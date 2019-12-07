@@ -22,14 +22,17 @@
     // console.log(add)
 
     //return prev.concat(Array.isArray(next)?flatten(next):next);
-    function flatten(arr) {
-        return arr.reduce((prev, item) => {
+    // function flatten(arr) {
+    //     return arr.reduce((prev, item) => {
           
-            return prev.concat(Array.isArray(item) ? flatten(item) : item);
+    //         return prev.concat(Array.isArray(item) ? flatten(item) : item);
 
-        }, [])
-    }
-    console.log(flatten(arr))
+    //     }, [])
+    // }
+    // console.log(flatten(arr))
+    let str = JSON.stringify(arr)
+
+    ary = str.replace(/(\[|\])/g, '').split(',')
 
 </script>
 
